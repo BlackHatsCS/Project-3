@@ -1,0 +1,78 @@
+import random
+import time
+
+class treasure():
+    def __init__(self,SpawnLocation):
+        
+        self.SpawnLocation= SpawnLocation
+
+# the user choice where the treause is located by entering letter
+
+    def treasureSpawnLocation(self):
+        rspawn= 0
+        rspawn = raw_input ('enter your rspawn:')        
+        if rspawn == "a":
+            self.SpawnLocation = 3
+            print self.SpawnLocation
+        elif rspawn == "b":
+            self.SpawnLocation= 4
+            print self.SpawnLocation
+        elif rspawn == "c":
+            self.SpawnLocation=5
+            print self.SpawnLocation
+        elif rspawn == "d":
+            self.SpawnLocation=6
+            print self.SpawnLocation
+        elif rspawn == "e":
+            self.SpawnLocation=7
+            print self.SpawnLocation
+        elif rspawn == "f":
+            self.SpawnLocation=8
+            print self.SpawnLocation
+        elif rspawn == "g":
+            self.SpawnLocation=9
+            print self.SpawnLocation
+        elif rspawn == "h":
+            self.SpawnLocation=10
+            print self.SpawnLocation
+        elif rspawn == "i":
+            self.SpawnLocation=11
+            print self.SpawnLocation
+        elif rspawn == "j":
+            self.SpawnLocation=12
+            print self.SpawnLocation
+
+
+class treasureItem(treasure):
+    def __init__(self,SpawnLocation,TypeOfTreasure):
+
+        self.SpawnLocation = SpawnLocation
+        self.typeOfTreasure = TypeOfTreasure
+        self.treasureType = random.randint(0,2)
+        self.assignValueOfTreasure()
+
+    def returnType(self):
+        if self.treasureType == 0:
+            print "The treaure is Gold"
+        elif self.treasureType == 1:
+            print "The treasure is Silver"
+        else:
+            print "The treasure is Bronze"
+            
+    def assignValueOfTreasure(self):
+        if self.treasureType == 0:
+            self.ValueOfTreasure = 10
+            print "the value is "
+        elif self.treasureType == 1:
+            self.ValueOfTreasure = 5
+            print "the value is "
+        else:
+            self.ValueOfTreasure = 2
+            print "the value is "
+        print self.ValueOfTreasure
+           
+treasure_A = treasureItem(1,1)
+treasure_A.treasureSpawnLocation()
+treasure_A.returnType()
+
+
