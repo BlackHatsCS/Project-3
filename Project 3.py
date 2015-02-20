@@ -169,17 +169,17 @@ def spawn():
     elif rspawn ==3:
         rstart = 'i'
 spawn()
-    
+ 
 """
 This code has been adapted from code taken from the site
 http://geekly-yours.blogspot.co.uk/2014/03/dijkstra-algorithm-python-example-source-code-shortest-path.html
 """
-
 def dijkstra(graph,src,dest,visited=[],distances={},predecessors={}):
     """ calculates a shortest path tree routed in src
     """
     global distan
     global path
+    global curLocal
     # a few sanity checks
     if src not in graph:
         raise TypeError('the root of the shortest path tree cannot be found in the graph')
@@ -221,9 +221,9 @@ def dijkstra(graph,src,dest,visited=[],distances={},predecessors={}):
             if k not in visited:
                 unvisited[k] = distances.get(k,float('inf'))
         
-        x=min(unvisited, key=unvisited.get)
+        curLocal=min(unvisited, key=unvisited.get)
         
-        dijkstra(graph,x,dest,visited,distances,predecessors)
+        dijkstra(graph,curLocal,dest,visited,distances,predecessors)
 
 #function to draw the information box to detail the treasure location
 def drawBox():
@@ -357,8 +357,9 @@ landmarkTreasureState ={'t' : False, 'a' : False,
                         'f' : False, 'h' : False,
                         'c' : False, 'j' : False,
                         'i' : False, 'd' : False}
-
+TreasureLocations =[]
 def userInputTreasureLocation():
+    global treasureLocation
     treasureLocation = raw_input("Input treasure location: ")
     #landmark(treasureLocation)
     landmarkTreasureState[treasureLocation] = True
@@ -404,17 +405,48 @@ if __name__ == "__main__":
     scoreCounter = Counter(0,1160,300)
     scoreCounter.drawCounter()
     
+    shortestdict = {}
 
-
     userInputTreasureLocation()
+    dijkstra(graph,rstart,treasureLocation , [], {}, {}) 
+    shortestdict[treasureLocation] = distan
+    print shortestdict
+    
     userInputTreasureLocation()
+    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    shortestdict[treasureLocation] = distan
+    print shortestdict
+             
     userInputTreasureLocation()
+    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    shortestdict[treasureLocation] = distan
+    print shortestdict
+             
     userInputTreasureLocation()
+    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    shortestdict[treasureLocation] = distan
+    print shortestdict
+             
     userInputTreasureLocation()
+    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    shortestdict[treasureLocation] = distan
+    print shortestdict
+             
     drawScreen()
     pygame.event.wait()
-    
+    z = 0
+    while len(shortestdict) > 0:
+        if z < 1:
+            dijkstra(graph,rstart,min(shortestdict, key=shortestdict.get) , [], {}, {})
+            z =1
+        else:
+            dijkstra(graph,curLocal,min(shortestdict, key=shortestdict.get) , [], {}, {})
+        iteratepath()
+        del shortestdict[min(shortestdict, key=shortestdict.get)]
        #calling the functions to execute the main part of the program
+    
+
+    '''
     dijkstra(graph,rstart,treasure , [], {}, {})
     iteratepath()
     time.sleep(3)
@@ -454,6 +486,7 @@ if __name__ == "__main__":
     dijkstra(graph,rstart,treasure, [], {}, {})
     iteratepath()
     time.sleep(3)
+    '''
     
     #script to easily close window if it runs through
     pygame.display.update()
