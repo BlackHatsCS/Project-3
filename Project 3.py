@@ -3,7 +3,6 @@ import random
 import time
 import pygame
 import sys
-from pygame.locals import *
 pygame.init()
 
 #initialising variables needed and drawing the window
@@ -49,7 +48,7 @@ vardict = { 't': t, 'a': a,
 #initialising the waitTime variable which is used to change the rate 
 #at which the screen refreshes
 global waitTime
-waitTime = 0.01
+waitTime = 0.015
 
 #function used to draw the traffic light
 def drawTraffic(coords, colour, radius):
@@ -143,22 +142,6 @@ def drawScreen():
     
     drawAllTreasures()
 
-#function to randomly generate a starting position for treasure and robot
-def spawn():
-    rspawn = random.randint(0,3)
-    tspawn = random.randint(0,3)
-    global treasure
-    if tspawn == 0:
-         treasure = 't'
-    elif tspawn == 1:
-        treasure = 'a'
-    elif tspawn == 2:
-        treasure = 'e'
-    elif tspawn ==3:
-        treasure = 'g'
-    global rstart
-spawn()
- 
 """
 This code has been adapted from code taken from the site
 http://geekly-yours.blogspot.co.uk/2014/03/dijkstra-algorithm-python-example-source-code-shortest-path.html
@@ -215,6 +198,7 @@ def dijkstra(graph,src,dest,visited=[],distances={},predecessors={}):
         dijkstra(graph,curLocal,dest,visited,distances,predecessors)
 
 #function to draw the information box to detail the treasure location
+"""
 def drawBox():
     Location = {'t': 'Big Ben',
                 'a': 'London Eye',
@@ -223,7 +207,7 @@ def drawBox():
     pygame.draw.rect(screen, BLACK, (900,550,355,100), 5)
     screen.blit(font.render(Location[treasure], True, BLACK),(920,580))
     pygame.display.update()
-
+"""
 global ax
 global ay        
 
@@ -250,11 +234,10 @@ def iteratepath():
     elif x==1:
         endpos = path[0]
         movement(vardict[path[0]], local)
+        landmarkTreasureState[endpos] = False
         local = vardict[path[0]]
         treasureCounter.addScore(1)
         scoreCounter.addScore(30-(distan))
-        drawBox()
-        print endpos
         
 #defining variables used within the movement() function
 amberCounter = 0
@@ -284,7 +267,6 @@ def movement(dest, start):
         rectangle = pygame.draw.rect(screen, BLUE,(currentx,currenty, 10,  10 ))
         global amberCounter
         global waitTime
-        global test
         global counter
         treasureCounter.drawCounter()
         scoreCounter.drawCounter()
@@ -353,37 +335,39 @@ if __name__ == "__main__":
     
     shortestdict = {}
 
+    rspawn = raw_input("Input robot location(a,b,c,d,e,f,g,h,s,t): ")
+    
     userInputTreasureLocation()
-    dijkstra(graph,'a',treasureLocation , [], {}, {}) 
+    dijkstra(graph,rspawn,treasureLocation , [], {}, {}) 
     shortestdict[treasureLocation] = distan
     print shortestdict
     
     userInputTreasureLocation()
-    dijkstra(graph,'a',treasureLocation , [], {}, {})
+    dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
     userInputTreasureLocation()
-    dijkstra(graph,'a',treasureLocation , [], {}, {})
+    dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
     userInputTreasureLocation()
-    dijkstra(graph,'a',treasureLocation , [], {}, {})
+    dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
     userInputTreasureLocation()
-    dijkstra(graph,'a',treasureLocation , [], {}, {})
+    dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
-             
+       
     drawScreen()
     pygame.event.wait()
     z = 0
     while len(shortestdict) > 0:
         if z < 1:
-            dijkstra(graph,'a',min(shortestdict, key=shortestdict.get) , [], {}, {})
+            dijkstra(graph,rspawn,min(shortestdict, key=shortestdict.get) , [], {}, {})
             z =1
         else:
             dijkstra(graph,curLocal,min(shortestdict, key=shortestdict.get) , [], {}, {})
@@ -392,5 +376,3 @@ if __name__ == "__main__":
 
     #script to easily close window if it runs through
     pygame.display.update()
-    raw_input("Press enter to quit")
-    pygame.quit()
