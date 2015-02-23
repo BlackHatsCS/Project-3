@@ -160,14 +160,6 @@ def spawn():
     elif tspawn ==3:
         treasure = 'g'
     global rstart
-    if rspawn == 0:
-        rstart = 'c'
-    elif rspawn == 1:
-        rstart = 'j'
-    elif rspawn == 2:
-        rstart = 'd'
-    elif rspawn ==3:
-        rstart = 'i'
 spawn()
  
 """
@@ -256,8 +248,8 @@ def iteratepath():
         print ax
         movement(vardict[path[x-1]], local)
         local = vardict[path[x-1]]
-        drawTraffic((1208, 140), BLACK,40)
-        drawTraffic((1208, 140), GREEN,30)
+        #drawTraffic((1208, 140), BLACK,40)
+        #drawTraffic((1208, 140), GREEN,30)
         path.pop(x-1)
         
         x -= 1
@@ -269,15 +261,14 @@ def iteratepath():
         local = vardict[path[0]]
         treasureCounter.addScore(1)
         scoreCounter.addScore(30-(distan))
-        drawTraffic((1208, 140), BLACK,40)
-        drawTraffic((1208, 140), GREEN,30)
+        #drawTraffic((1208, 140), BLACK,40)
+        #drawTraffic((1208, 140), GREEN,30)
         drawBox()
         print endpos
         
 #defining variables used within the movement() function
 amberCounter = 0
 test = 0
-waitTime = 0
 counter = 0
 
 #function that makes the robot move along the lines and controls the traffic light
@@ -313,29 +304,6 @@ def movement(dest, start):
         scoreCounter.drawCounter()
         if counter != 5:
             counter = random.randint(0,100)
-         
-        if test < 1:
-            waitTime = 0.01
-            test = 1
-        if counter == 5:
-            drawTraffic((1208,140), AMBER, 30)
-            waitTime = 0.05
-            
-            if amberCounter == 20:
-                drawTraffic((1208,140), RED, 30)
-                time.sleep(3)
-                amberCounter = 0
-                counter = 0
-                test = 0
-                drawTraffic((1208,140), GREEN, 30)
-                counter = random.randint(0,100)
-            amberCounter = amberCounter + 1
-
-        
-            
-            
-                
-
         
         time.sleep(waitTime)
         pygame.display.update()
@@ -360,7 +328,7 @@ landmarkTreasureState ={'t' : False, 'a' : False,
 TreasureLocations =[]
 def userInputTreasureLocation():
     global treasureLocation
-    treasureLocation = raw_input("Input treasure location: ")
+    treasureLocation = raw_input("Input treasure location(a,b,c,d,e,f,g,h,s,t): ")
     #landmark(treasureLocation)
     landmarkTreasureState[treasureLocation] = True
 
@@ -408,27 +376,27 @@ if __name__ == "__main__":
     shortestdict = {}
 
     userInputTreasureLocation()
-    dijkstra(graph,rstart,treasureLocation , [], {}, {}) 
+    dijkstra(graph,'a',treasureLocation , [], {}, {}) 
     shortestdict[treasureLocation] = distan
     print shortestdict
     
     userInputTreasureLocation()
-    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    dijkstra(graph,'a',treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
     userInputTreasureLocation()
-    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    dijkstra(graph,'a',treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
     userInputTreasureLocation()
-    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    dijkstra(graph,'a',treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
     userInputTreasureLocation()
-    dijkstra(graph,rstart,treasureLocation , [], {}, {})
+    dijkstra(graph,'a',treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
     print shortestdict
              
@@ -437,7 +405,7 @@ if __name__ == "__main__":
     z = 0
     while len(shortestdict) > 0:
         if z < 1:
-            dijkstra(graph,rstart,min(shortestdict, key=shortestdict.get) , [], {}, {})
+            dijkstra(graph,'a',min(shortestdict, key=shortestdict.get) , [], {}, {})
             z =1
         else:
             dijkstra(graph,curLocal,min(shortestdict, key=shortestdict.get) , [], {}, {})
