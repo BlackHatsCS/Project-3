@@ -56,8 +56,6 @@ def drawTraffic(coords, colour, radius):
     pygame.draw.circle(screen, colour, coords, radius)
     pygame.display.update()
 
-
-
 #defining the class for the treasure/score counter
 class Counter():
     def __init__(self, score, x, y):
@@ -145,7 +143,6 @@ def drawScreen():
     
     drawAllTreasures()
 
-
 #function to randomly generate a starting position for treasure and robot
 def spawn():
     rspawn = random.randint(0,3)
@@ -227,7 +224,6 @@ def drawBox():
     screen.blit(font.render(Location[treasure], True, BLACK),(920,580))
     pygame.display.update()
 
-    
 global ax
 global ay        
 
@@ -248,12 +244,8 @@ def iteratepath():
         print ax
         movement(vardict[path[x-1]], local)
         local = vardict[path[x-1]]
-        #drawTraffic((1208, 140), BLACK,40)
-        #drawTraffic((1208, 140), GREEN,30)
         path.pop(x-1)
-        
         x -= 1
-
         iteratepath()
     elif x==1:
         endpos = path[0]
@@ -261,8 +253,6 @@ def iteratepath():
         local = vardict[path[0]]
         treasureCounter.addScore(1)
         scoreCounter.addScore(30-(distan))
-        #drawTraffic((1208, 140), BLACK,40)
-        #drawTraffic((1208, 140), GREEN,30)
         drawBox()
         print endpos
         
@@ -282,17 +272,13 @@ def movement(dest, start):
     stepy = float(by-ay)/steps_number
     
     for i in range(steps_number+1):
-        #screen.fill(WHITE)
-        
+
         global currentx
         global currenty
-        
         currentx = ax + stepx*i
         currenty = ay + stepy*i
-
         
-        int(ax + stepx*i), int(ay + stepy*i)
-        
+        int(ax + stepx*i), int(ay + stepy*i)   
         
         drawScreen()
         rectangle = pygame.draw.rect(screen, BLUE,(currentx,currenty, 10,  10 ))
@@ -307,11 +293,7 @@ def movement(dest, start):
         
         time.sleep(waitTime)
         pygame.display.update()
-
-'''
-'''
-
-        
+       
 landmarkCoords ={'t' : (145, 138), 'a' : (75, 258) ,
                  'b' : (275, 258), 'e' : (165, 378),
                  'g' : (95 , 498), 's' : (295, 498),
@@ -325,11 +307,11 @@ landmarkTreasureState ={'t' : False, 'a' : False,
                         'f' : False, 'h' : False,
                         'c' : False, 'j' : False,
                         'i' : False, 'd' : False}
+
 TreasureLocations =[]
 def userInputTreasureLocation():
     global treasureLocation
     treasureLocation = raw_input("Input treasure location(a,b,c,d,e,f,g,h,s,t): ")
-    #landmark(treasureLocation)
     landmarkTreasureState[treasureLocation] = True
 
 def drawAllTreasures():
@@ -345,11 +327,7 @@ def locationcheck(location):
         print 'There is a treasure at location ' + location + ' gain x amount of points.'
     else:
         print 'There is not a treaure at this location.'
-
-"""
-"""
-
-    
+  
 if __name__ == "__main__":
             #defining the array of nodes that the robot should navigate through
     graph = {'t': {'a': 1, 'b': 5},
@@ -411,51 +389,7 @@ if __name__ == "__main__":
             dijkstra(graph,curLocal,min(shortestdict, key=shortestdict.get) , [], {}, {})
         iteratepath()
         del shortestdict[min(shortestdict, key=shortestdict.get)]
-       #calling the functions to execute the main part of the program
-    
 
-    '''
-    dijkstra(graph,rstart,treasure , [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    spawn()
-    local = ()
-    screen.fill(WHITE)
-    dijkstra(graph,rstart,treasure, [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    spawn()
-    local = ()
-    screen.fill(WHITE)
-    dijkstra(graph,rstart,treasure, [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    spawn()
-    local = ()
-    screen.fill(WHITE)
-    dijkstra(graph,rstart,treasure, [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    spawn()
-    local = ()
-    screen.fill(WHITE)
-    dijkstra(graph,rstart,treasure, [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    spawn()
-    local = ()
-    screen.fill(WHITE)
-    dijkstra(graph,rstart,treasure, [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    spawn()
-    local = ()
-    screen.fill(WHITE)
-    dijkstra(graph,rstart,treasure, [], {}, {})
-    iteratepath()
-    time.sleep(3)
-    '''
-    
     #script to easily close window if it runs through
     pygame.display.update()
     raw_input("Press enter to quit")
