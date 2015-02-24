@@ -166,9 +166,8 @@ def dijkstra(graph,src,dest,visited=[],distances={},predecessors={}):
         while pred != None:
             path.append(pred)
             pred=predecessors.get(pred,None)
-            print pred
             distan = distances[dest]
-        print('shortest path: '+str(path)+" cost="+str(distances[dest]))
+        #print('shortest path: '+str(path)+" cost="+str(distances[dest]))
             
     else :     
         # if it is the initial run, initializes the cost
@@ -221,11 +220,9 @@ def iteratepath():
     global local
     x = len(path)
     if x > 1:
-        print path[x-1]
         if local == ():
             local = vardict[path[x-1]]
         
-        print ax
         movement(vardict[path[x-1]], local)
         local = vardict[path[x-1]]
         path.pop(x-1)
@@ -234,10 +231,27 @@ def iteratepath():
     elif x==1:
         endpos = path[0]
         movement(vardict[path[0]], local)
-        landmarkTreasureState[endpos] = False
+        tscore = 0
+        if landmarkTreasureState[endpos] == 1:
+            tscore = 10
+            print " You Found some Bronze."
+        elif landmarkTreasureState[endpos] == 2:
+            tscore = 20
+            print " You Found some Silver."
+        elif landmarkTreasureState[endpos] == 3:
+            tscore = 30
+            print " You Found some GOld."
+        elif landmarkTreasureState[endpos] == 4:
+            tscore = 40
+            print " You Found some Platinum."
+        elif landmarkTreasureState[endpos] == 5:
+            tscore = 50
+            print " You Found some Diamond."
+            
+        landmarkTreasureState[endpos] = 0
         local = vardict[path[0]]
         treasureCounter.addScore(1)
-        scoreCounter.addScore(30-(distan))
+        scoreCounter.addScore(tscore-(distan))
         
 #defining variables used within the movement() function
 amberCounter = 0
@@ -275,6 +289,8 @@ def movement(dest, start):
         
         time.sleep(waitTime)
         pygame.display.update()
+
+
        
 landmarkCoords ={'t' : (145, 138), 'a' : (75, 258) ,
                  'b' : (275, 258), 'e' : (165, 378),
@@ -283,33 +299,28 @@ landmarkCoords ={'t' : (145, 138), 'a' : (75, 258) ,
                  'c' : (495, 258), 'j' : (745, 258),
                  'i' : (795, 498), 'd' : (695, 378)}
 
-landmarkTreasureState ={'t' : False, 'a' : False,
-                        'b' : False, 'e' : False,
-                        'g' : False, 's' : False,
-                        'f' : False, 'h' : False,
-                        'c' : False, 'j' : False,
-                        'i' : False, 'd' : False}
+landmarkTreasureState ={'t' : 0, 'a' : 0,
+                        'b' : 0, 'e' : 0,
+                        'g' : 0, 's' : 0,
+                        'f' : 0, 'h' : 0,
+                        'c' : 0, 'j' : 0,
+                        'i' : 0, 'd' : 0}
 
 TreasureLocations =[]
 def userInputTreasureLocation():
     global treasureLocation
     treasureLocation = raw_input("Input treasure location(a,b,c,d,e,f,g,h,s,t): ")
-    landmarkTreasureState[treasureLocation] = True
+    landmarkTreasureState[treasureLocation] = random.randint(1,5)
 
 def drawAllTreasures():
     for key in landmarkTreasureState:
-        if landmarkTreasureState[key] == True:
+        if landmarkTreasureState[key] > 0:
             x, y = (landmarkCoords[key])
             pygame.draw.rect(screen, YELLOW,(x,y,10,10))
+        
     pygame.display.flip()
                  
-def locationcheck(location):
-    if landmarkTreasureState[location] == True :
-            
-        print 'There is a treasure at location ' + location + ' gain x amount of points.'
-    else:
-        print 'There is not a treaure at this location.'
-  
+ 
 if __name__ == "__main__":
             #defining the array of nodes that the robot should navigate through
     graph = {'t': {'a': 1, 'b': 5},
@@ -369,8 +380,10 @@ if __name__ == "__main__":
         if z < 1:
             dijkstra(graph,rspawn,min(shortestdict, key=shortestdict.get) , [], {}, {})
             z =1
+            
         else:
             dijkstra(graph,curLocal,min(shortestdict, key=shortestdict.get) , [], {}, {})
+            
         iteratepath()
         del shortestdict[min(shortestdict, key=shortestdict.get)]
 
