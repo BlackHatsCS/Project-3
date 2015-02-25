@@ -17,6 +17,7 @@ d = 695, 378
 nodes = [t, a, b, e, g, s, f, h, c, j, i, d]
 
 def spawn():
+    global trapspawn
     rspawn = random.randint(0,3)
     tspawn = random.randint(0,3)
     trapspawn = random.choice(nodes)
@@ -38,7 +39,6 @@ def spawn():
         rstart = 'd'
     elif rspawn ==3:
         rstart = 'i'
-    global trap
     if rspawn == 'c':
         trapspawn != 'c'
     elif rspawn == 'j':
