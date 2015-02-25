@@ -14,8 +14,9 @@ RED =(255,0,0)
 AMBER = (255,128,0)
 GREEN = (0,255,0)
 YELLOW = (255, 255, 0)
-font = pygame.font.SysFont(None, 48)
+font = pygame.font.SysFont(None, 40)
 font1 = pygame.font.SysFont(None,30)
+font2 = pygame.font.SysFont(None, 25)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Test Window')
 screen.fill(WHITE)
@@ -197,22 +198,19 @@ def dijkstra(graph,src,dest,visited=[],distances={},predecessors={}):
         dijkstra(graph,curLocal,dest,visited,distances,predecessors)
 
 #function to draw the information box to detail the treasure location
-"""
-def drawBox():
-    Location = {'t': 'Big Ben',
-                'a': 'London Eye',
-                'e': 'Tower Bridge',
-                'g': 'Buckingham Palace',}
-    pygame.draw.rect(screen, BLACK, (900,550,355,100), 5)
-    screen.blit(font.render(Location[treasure], True, BLACK),(920,580))
+
+def drawBox(Type):
+    pygame.draw.rect(screen, WHITE, (120,580,800,100))
+    screen.blit(font2.render(Type, True, BLACK),(120,580))
     pygame.display.update()
-"""
+
 global ax
 global ay        
-
+global listtreasure
 ax = 0
 ay = 0
 local = ()
+listtreasure = []
 
 #function used to redraw objects on the screen
 def iteratepath():
@@ -228,31 +226,49 @@ def iteratepath():
         path.pop(x-1)
         x -= 1
         iteratepath()
+        #pygame.event.wait() 
     elif x==1:
         endpos = path[0]
         movement(vardict[path[0]], local)
         tscore = 0
+        
         if landmarkTreasureState[endpos] == 1:
             tscore = 10
+            listtreasure.append('Bronze')
+            drawBox(str(listtreasure))
             print " You Found some Bronze."
+           
         elif landmarkTreasureState[endpos] == 2:
             tscore = 20
+            listtreasure.append('Silver')
+            drawBox(str(listtreasure))
             print " You Found some Silver."
+          
         elif landmarkTreasureState[endpos] == 3:
             tscore = 30
-            print " You Found some GOld."
+            listtreasure.append('Gold')
+            drawBox(str(listtreasure))
+            print " You Found some Gold."
+           
         elif landmarkTreasureState[endpos] == 4:
             tscore = 40
+            listtreasure.append('Platinum')
+            drawBox(str(listtreasure))
             print " You Found some Platinum."
+          
         elif landmarkTreasureState[endpos] == 5:
             tscore = 50
+            listtreasure.append('Diamond')
+            drawBox(str(listtreasure))
             print " You Found some Diamond."
+
+        
             
         landmarkTreasureState[endpos] = 0
         local = vardict[path[0]]
         treasureCounter.addScore(1)
         scoreCounter.addScore(tscore-(distan))
-        
+        pygame.event.wait() 
 #defining variables used within the movement() function
 amberCounter = 0
 test = 0
@@ -319,8 +335,8 @@ def drawAllTreasures():
             pygame.draw.rect(screen, YELLOW,(x,y,10,10))
         
     pygame.display.flip()
-                 
- 
+
+
 if __name__ == "__main__":
             #defining the array of nodes that the robot should navigate through
     graph = {'t': {'a': 1, 'b': 5},
@@ -351,27 +367,22 @@ if __name__ == "__main__":
     userInputTreasureLocation()
     dijkstra(graph,rspawn,treasureLocation , [], {}, {}) 
     shortestdict[treasureLocation] = distan
-    print shortestdict
     
     userInputTreasureLocation()
     dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
-    print shortestdict
              
     userInputTreasureLocation()
     dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
-    print shortestdict
              
     userInputTreasureLocation()
     dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
-    print shortestdict
              
     userInputTreasureLocation()
     dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
-    print shortestdict
        
     drawScreen()
     pygame.event.wait()
