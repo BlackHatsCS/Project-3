@@ -38,7 +38,7 @@ def spawn():
         rstart = 'd'
     elif rspawn ==3:
         rstart = 'i'
-    global trapspawn
+    global trap
     if rspawn == 'c':
         trapspawn != 'c'
     elif rspawn == 'j':
