@@ -142,6 +142,7 @@ def drawScreen():
     screen.blit(font1.render('3', True, BLACK),(725,425))
     
     drawAllTreasures()
+    trap1.drawAllTraps()
 
 """
 This code has been adapted from code taken from the site
@@ -322,6 +323,13 @@ landmarkTreasureState ={'t' : 0, 'a' : 0,
                         'c' : 0, 'j' : 0,
                         'i' : 0, 'd' : 0}
 
+landmarkTrapState = {'t' : 0, 'a' : 0,
+                     'b' : 0, 'e' : 0,
+                     'g' : 0, 's' : 0,
+                     'f' : 0, 'h' : 0,
+                     'c' : 0, 'j' : 0,
+                     'i' : 0, 'd' : 0}
+
 TreasureLocations =[]
 def userInputTreasureLocation():
     global treasureLocation
@@ -337,6 +345,85 @@ def drawAllTreasures():
     pygame.display.flip()
 
 
+def trapLocation():
+    global traploca
+    if trspawn == 0:
+         traploca = 't'
+    elif trspawn == 1:
+        traploca = 'a'
+    elif trspawn == 2:
+        traploca = 'b'
+    elif trspawn == 3:
+        traploca = 'e'
+    elif trspawn == 4:
+        traploca = 'g'
+    elif trspawn == 5:
+        traploca = 's'
+    elif trspawn == 6:
+        traploca = 'f'
+    elif trspawn == 7:
+        traploca = 'h'
+    elif trspawn == 8:
+        traploca = 'c'
+    elif trspawn == 9:
+        traploca = 'j'
+    elif trspawn == 10:
+        traploca = 'i'
+    elif trspawn == 11:
+        traploca = 'd'
+        
+class trap():
+    def trapLocation(self):
+        trapspawn = random.randint(0, 11)
+        global traploca
+        if trapspawn == 0:
+             traploca = 't'
+        elif trapspawn == 1:
+            traploca = 'a'
+        elif trapspawn == 2:
+            traploca = 'b'
+        elif trapspawn == 3:
+            traploca = 'e'
+        elif trapspawn == 4:
+            traploca = 'g'
+        elif trapspawn == 5:
+            traploca = 's'
+        elif trapspawn == 6:
+            traploca = 'f'
+        elif trapspawn == 7:
+            traploca = 'h'
+        elif trapspawn == 8:
+            traploca = 'c'
+        elif trapspawn == 9:
+            traploca = 'j'
+        elif trapspawn == 10:
+            traploca = 'i'
+        elif trapspawn == 11:
+            traploca = 'd'
+    def drawAllTraps(self):
+        for key in landmarkTrapState:
+            if landmarkTrapState[key] > 0:
+                x, y = (landmarkCoords[key])
+                pygame.draw.rect(screen, GREEN,(x+2,y+2,6,6))
+        
+        pygame.display.flip()
+
+class lasttrap(trap):
+    def tstate(self):
+        landmarkTrapState[traploca] = 1
+class firsttrap(trap):
+    def tstate(self):
+        landmarkTrapState[traploca] = 2
+class randtrap(trap):
+    def tstate(self):
+        landmarkTrapState[traploca] = 3
+class waittrap(trap):
+    def tstate(self):
+        landmarkTrapState[traploca] = 4
+
+
+
+        
 if __name__ == "__main__":
             #defining the array of nodes that the robot should navigate through
     graph = {'t': {'a': 1, 'b': 5},
@@ -383,6 +470,15 @@ if __name__ == "__main__":
     userInputTreasureLocation()
     dijkstra(graph,rspawn,treasureLocation , [], {}, {})
     shortestdict[treasureLocation] = distan
+
+
+    
+    trap1 = lasttrap()
+    trap1.trapLocation()
+    trap1.tstate()
+    
+    
+    trap1.drawAllTraps()
        
     drawScreen()
     pygame.event.wait()
