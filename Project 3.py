@@ -215,6 +215,7 @@ listtreasure = []
 
 #function used to redraw objects on the screen
 def iteratepath():
+    
     global x
     global local
     x = len(path)
@@ -227,12 +228,14 @@ def iteratepath():
         path.pop(x-1)
         x -= 1
         iteratepath()
-        #pygame.event.wait() 
+        #pygame.event.wait()
+        
     elif x==1:
         endpos = path[0]
         movement(vardict[path[0]], local)
         tscore = 0
-        
+        if landmarkTreasureState[endpos] == 0:
+            print 'here'
         if landmarkTreasureState[endpos] == 1:
             tscore = 10
             listtreasure.append('Bronze')
@@ -262,31 +265,30 @@ def iteratepath():
             listtreasure.append('Diamond')
             drawBox(str(listtreasure))
             print " You Found some Diamond."
-        if landmarkTrapState[endpos] == 1:
-            trap1.trapaction()
-            drawBox(str(listtreasure))
-            print " You lost some  Treasure."
-        if landmarkTrapState[endpos] == 2:
-            trap2.trapaction()
-            drawBox(str(listtreasure))
-            print " You lost some Treasure."
-        if landmarkTrapState[endpos] == 3:
-            trap3.trapaction()
-            drawBox(str(listtreasure))
-            print " You lost some Treasure."
-        if landmarkTrapState[endpos] == 4:
-            trap4.trapaction()
-            drawBox(str(listtreasure))
-            print " You lost some Treasure."
-            
-
-        
-            
         landmarkTreasureState[endpos] = 0
         local = vardict[path[0]]
         treasureCounter.addScore(1)
         scoreCounter.addScore(tscore-(distan))
-        pygame.event.wait() 
+        pygame.event.wait()
+    
+    trapstate(path[len(path)-1])
+    landmarkTrapState[path[len(path)-1]] = 0 
+        
+def trapstate(locat):
+    if landmarkTrapState[locat] == 1:
+        trap1.trapaction()
+        drawBox(str(listtreasure))
+        print " You lost your last Treasure."
+    if landmarkTrapState[locat] == 2:
+        trap2.trapaction()
+        drawBox(str(listtreasure))
+        print " You lost your first Treasure."
+    if landmarkTrapState[locat] == 3:
+        trap3.trapaction()
+        drawBox(str(listtreasure))
+        print " You lost a random Treasure."
+
+        
 #defining variables used within the movement() function
 amberCounter = 0
 test = 0
@@ -322,6 +324,7 @@ def movement(dest, start):
             counter = random.randint(0,100)
         
         time.sleep(waitTime)
+        
         pygame.display.update()
 
 
@@ -430,7 +433,7 @@ class lasttrap(trap):
         landmarkTrapState[traploca] = 1
     def trapaction(self):
         if len(listtreasure) > 0:
-            listtreasure.pop()
+            listtreasure.pop(len(listtreasure) - 1)
 class firsttrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 2
@@ -442,17 +445,12 @@ class randtrap(trap):
         landmarkTrapState[traploca] = 3
     def trapaction(self):
         if len(listtreasure) > 0:
-            listtreasure.pop(random.randint(0,len(listtreasure)))
-class waittrap(trap):
-    def tstate(self):
-        landmarkTrapState[traploca] = 4
-    def trapaction(self):
-        time.sleep(4)                   
+            value = random.randrange(len(listtreasure))
+            listtreasure.pop(value)
 
 
-
-        
 if __name__ == "__main__":
+    
             #defining the array of nodes that the robot should navigate through
     graph = {'t': {'a': 1, 'b': 5},
             'a': {'t': 1, 'b': 4, 'e': 2},
@@ -466,7 +464,6 @@ if __name__ == "__main__":
             's': {'g': 3, 'h': 2},
             'h': {'s': 2, 'f': 2, 'i': 4, 'd':6},
             'i': {'h': 4, 'd': 3}}
-    
     
     
     #defining the treasure/score counter and calling the draw function
@@ -513,10 +510,6 @@ if __name__ == "__main__":
     trap3.trapLocation()
     trap3.tstate()
     
-    trap4 = waittrap()
-    trap4.trapLocation()
-    trap4.tstate()
-    
        
     drawScreen()
     pygame.event.wait()
@@ -533,4 +526,5 @@ if __name__ == "__main__":
         del shortestdict[min(shortestdict, key=shortestdict.get)]
 
     #script to easily close window if it runs through
+    pygame.event.wait()
     pygame.display.update()
