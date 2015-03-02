@@ -262,6 +262,23 @@ def iteratepath():
             listtreasure.append('Diamond')
             drawBox(str(listtreasure))
             print " You Found some Diamond."
+        if landmarkTrapState[endpos] == 1:
+            trap1.trapaction()
+            drawBox(str(listtreasure))
+            print " You lost some  Treasure."
+        if landmarkTrapState[endpos] == 2:
+            trap2.trapaction()
+            drawBox(str(listtreasure))
+            print " You lost some Treasure."
+        if landmarkTrapState[endpos] == 3:
+            trap3.trapaction()
+            drawBox(str(listtreasure))
+            print " You lost some Treasure."
+        if landmarkTrapState[endpos] == 4:
+            trap4.trapaction()
+            drawBox(str(listtreasure))
+            print " You lost some Treasure."
+            
 
         
             
@@ -411,15 +428,26 @@ class trap():
 class lasttrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 1
+    def trapaction(self):
+        if len(listtreasure) > 0:
+            listtreasure.pop()
 class firsttrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 2
+    def trapaction(self):
+        if len(listtreasure) > 0:
+            listtreasure.pop(0)
 class randtrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 3
+    def trapaction(self):
+        if len(listtreasure) > 0:
+            listtreasure.pop(random.randint(0,len(listtreasure)))
 class waittrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 4
+    def trapaction(self):
+        time.sleep(4)                   
 
 
 
@@ -477,8 +505,18 @@ if __name__ == "__main__":
     trap1.trapLocation()
     trap1.tstate()
     
+    trap2 = firsttrap()
+    trap2.trapLocation()
+    trap2.tstate()
     
-    trap1.drawAllTraps()
+    trap3 = randtrap()
+    trap3.trapLocation()
+    trap3.tstate()
+    
+    trap4 = waittrap()
+    trap4.trapLocation()
+    trap4.tstate()
+    
        
     drawScreen()
     pygame.event.wait()
