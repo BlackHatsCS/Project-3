@@ -525,6 +525,72 @@ if __name__ == "__main__":
         iteratepath()
         del shortestdict[min(shortestdict, key=shortestdict.get)]
 
+    sortedlist = []
+    
+    def sortTreasures():
+        if 'Bronze' in listtreasure:
+            sortedlist.append('Bronze')
+            listtreasure.pop(listtreasure.index('Bronze'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasures()
+            
+        if 'Silver' in listtreasure:
+            sortedlist.append('Silver')
+            listtreasure.pop(listtreasure.index('Silver'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasures()
+            
+        if 'Gold' in listtreasure:
+            sortedlist.append('Gold')
+            listtreasure.pop(listtreasure.index('Gold'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasures()
+            
+        if 'Platinum' in listtreasure:
+            sortedlist.append('Platinum')
+            listtreasure.pop(listtreasure.index('Platinum'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasures()
+            
+        if 'Diamond' in listtreasure:
+            sortedlist.append('Diamond')
+            listtreasure.pop(listtreasure.index('Diamond'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasures()
+
+    pygame.draw.rect(screen, WHITE, (120,580,500,200))
+    screen.blit(font2.render ('Sorting the list, please stand by...', True, BLACK),(120,580))
+    pygame.display.update()
+    
+    
+    while len(listtreasure)>0:
+        sortTreasures()
+
+    time.sleep(1)
+    pygame.draw.rect(screen, WHITE, (120,580,500,200))
+    screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+    screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+
     #script to easily close window if it runs through
     pygame.event.wait()
     pygame.display.update()
