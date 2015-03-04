@@ -14,6 +14,7 @@ RED =(255,0,0)
 AMBER = (255,128,0)
 GREEN = (0,255,0)
 YELLOW = (255, 255, 0)
+wishlistDraw = 0
 font = pygame.font.SysFont(None, 40)
 font1 = pygame.font.SysFont(None,30)
 font2 = pygame.font.SysFont(None, 25)
@@ -21,8 +22,7 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Test Window')
 screen.fill(WHITE)
 
-pygame.display.update()
-pygame.display.flip()
+
 
 #defining coordinates used in the movement() function
 t = 145, 138
@@ -51,11 +51,6 @@ vardict = { 't': t, 'a': a,
 global waitTime
 waitTime = 0.015
 
-#function used to draw the traffic light
-def drawTraffic(coords, colour, radius):
-    pygame.draw.circle(screen, colour, coords, radius)
-    pygame.display.update()
-
 #defining the class for the treasure/score counter
 class Counter():
     def __init__(self, score, x, y):
@@ -70,7 +65,6 @@ class Counter():
                     (self.x+30, self.y+35))
         screen.blit(font.render("Score", True, BLACK),(1060,330))
         screen.blit(font.render("Treasures", True, BLACK),(990,450))
-        pygame.display.update()
 
     #function to draw the score when the treasure is collected
     #also sets score to new score
@@ -80,7 +74,6 @@ class Counter():
         screen.blit(font.render(str(self.score+addScore), True, BLACK),
                     (self.x+30, self.y+35))
         self.score = self.score+addScore
-        pygame.display.update()
 
 #defining the functions to draw lines and diamonds on the screen
 def line(coods1, coods2):
@@ -140,17 +133,21 @@ def drawScreen():
     screen.blit(font1.render('1', True, BLACK),(600,275))
     screen.blit(font1.render('5', True, BLACK),(700,325))
     screen.blit(font1.render('3', True, BLACK),(725,425))
+
+    if wishlistDraw == 1:
+        screen.blit(font.render('You picked up the wishlisted treasure', True, BLACK),(350,190))
     
     drawAllTreasures()
     trap1.drawAllTraps()
+    pygame.display.update()
 
 """
 This code has been adapted from code taken from the site
 http://geekly-yours.blogspot.co.uk/2014/03/dijkstra-algorithm-python-example-source-code-shortest-path.html
 """
 def dijkstra(graph,src,dest,visited=[],distances={},predecessors={}):
-    """ calculates a shortest path tree routed in src
-    """
+    #calculates a shortest path tree routed in src
+    
     global distan
     global path
     global curLocal
@@ -234,6 +231,9 @@ def iteratepath():
         endpos = path[0]
         movement(vardict[path[0]], local)
         tscore = 0
+        global wishlistDraw
+        if endpos == wishlistLocation:
+            wishlistDraw = 1
         if landmarkTreasureState[endpos] == 0:
             print 'here'
         if landmarkTreasureState[endpos] == 1:
@@ -265,6 +265,9 @@ def iteratepath():
             listtreasure.append('Diamond')
             drawBox(str(listtreasure))
             print " You Found some Diamond."
+        
+
+            
         landmarkTreasureState[endpos] = 0
         local = vardict[path[0]]
         treasureCounter.addScore(1)
@@ -351,10 +354,19 @@ landmarkTrapState = {'t' : 0, 'a' : 0,
                      'i' : 0, 'd' : 0}
 
 TreasureLocations =[]
+global wishlistLoop
+wishlistLoop = 0
+
 def userInputTreasureLocation():
     global treasureLocation
+    global wishlistLocation
+    global wishlistLoop
     treasureLocation = raw_input("Input treasure location(a,b,c,d,e,f,g,h,s,t): ")
     landmarkTreasureState[treasureLocation] = random.randint(1,5)
+    while wishlistLoop == 0:
+        print "This is your wishlist treasure."
+        wishlistLocation = treasureLocation
+        wishlistLoop = 1
 
 def drawAllTreasures():
     for key in landmarkTreasureState:
@@ -425,8 +437,6 @@ class trap():
             if landmarkTrapState[key] > 0:
                 x, y = (landmarkCoords[key])
                 pygame.draw.rect(screen, GREEN,(x+2,y+2,6,6))
-        
-        pygame.display.flip()
 
 class lasttrap(trap):
     def tstate(self):
