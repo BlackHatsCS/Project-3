@@ -444,12 +444,15 @@ class lasttrap(trap):
     def trapaction(self):
         if len(listtreasure) > 0:
             listtreasure.pop(len(listtreasure) - 1)
+            treasureCounter.score -= 1
+
 class firsttrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 2
     def trapaction(self):
         if len(listtreasure) > 0:
             listtreasure.pop(0)
+            treasureCounter.score -= 1
 class randtrap(trap):
     def tstate(self):
         landmarkTrapState[traploca] = 3
@@ -457,6 +460,7 @@ class randtrap(trap):
         if len(listtreasure) > 0:
             value = random.randrange(len(listtreasure))
             listtreasure.pop(value)
+            treasureCounter.score -= 1
 
 
 if __name__ == "__main__":
@@ -537,7 +541,7 @@ if __name__ == "__main__":
 
     sortedlist = []
     
-    def sortTreasures():
+    def sortTreasuresAsc():
         if 'Bronze' in listtreasure:
             sortedlist.append('Bronze')
             listtreasure.pop(listtreasure.index('Bronze'))
@@ -546,7 +550,7 @@ if __name__ == "__main__":
             screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
             pygame.display.update()
             time.sleep(1)
-            sortTreasures()
+            sortTreasuresAsc()
             
         if 'Silver' in listtreasure:
             sortedlist.append('Silver')
@@ -556,7 +560,7 @@ if __name__ == "__main__":
             screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
             pygame.display.update()
             time.sleep(1)
-            sortTreasures()
+            sortTreasuresAsc()
             
         if 'Gold' in listtreasure:
             sortedlist.append('Gold')
@@ -566,7 +570,7 @@ if __name__ == "__main__":
             screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
             pygame.display.update()
             time.sleep(1)
-            sortTreasures()
+            sortTreasuresAsc()
             
         if 'Platinum' in listtreasure:
             sortedlist.append('Platinum')
@@ -576,7 +580,7 @@ if __name__ == "__main__":
             screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
             pygame.display.update()
             time.sleep(1)
-            sortTreasures()
+            sortTreasuresAsc()
             
         if 'Diamond' in listtreasure:
             sortedlist.append('Diamond')
@@ -586,15 +590,71 @@ if __name__ == "__main__":
             screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
             pygame.display.update()
             time.sleep(1)
-            sortTreasures()
+            sortTreasuresAsc()
+
+    def sortTreasuresDsc():
+        if 'Diamond' in listtreasure:
+            sortedlist.append('Diamond')
+            listtreasure.pop(listtreasure.index('Diamond'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasuresDsc()
+            
+        if 'Platinum' in listtreasure:
+            sortedlist.append('Platinum')
+            listtreasure.pop(listtreasure.index('Platinum'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasuresDsc()
+  
+        if 'Gold' in listtreasure:
+            sortedlist.append('Gold')
+            listtreasure.pop(listtreasure.index('Gold'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasuresDsc()
+            
+        if 'Silver' in listtreasure:
+            sortedlist.append('Silver')
+            listtreasure.pop(listtreasure.index('Silver'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasuresDsc()
+            
+        if 'Bronze' in listtreasure:
+            sortedlist.append('Bronze')
+            listtreasure.pop(listtreasure.index('Bronze'))
+            pygame.draw.rect(screen, WHITE, (120,580,500,200))
+            screen.blit(font2.render(str(listtreasure), True, BLACK),(120,580))
+            screen.blit(font2.render(str(sortedlist), True, BLACK),(120,680))
+            pygame.display.update()
+            time.sleep(1)
+            sortTreasuresDsc()
 
     pygame.draw.rect(screen, WHITE, (120,580,500,200))
     screen.blit(font2.render ('Sorting the list, please stand by...', True, BLACK),(120,580))
     pygame.display.update()
     
+    sortOrder = raw_input("Sort ascending or descending? (a/d): ")
+    pygame.event.wait()
     
     while len(listtreasure)>0:
-        sortTreasures()
+        if sortOrder == "a":
+            sortTreasuresAsc()
+        elif sortOrder == "d":
+            sortTreasuresDsc()
 
     time.sleep(1)
     pygame.draw.rect(screen, WHITE, (120,580,500,200))
